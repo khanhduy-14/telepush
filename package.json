@@ -4,7 +4,10 @@
   "description": "Send Telegram messages to your personal account via a simple Node.js/TypeScript API.",
   "license": "MIT",
   "author": "",
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/khanhduy-14/telepush.git"
+  },
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
