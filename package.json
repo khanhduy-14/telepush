@@ -1,6 +1,6 @@
 {
   "name": "telepush",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Send Telegram messages to your personal account via a simple Node.js/TypeScript API.",
   "license": "MIT",
   "author": "",
