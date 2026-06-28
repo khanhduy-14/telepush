@@ -78,6 +78,11 @@ test("constructor throws on missing chatId", async () => {
   assert.throws(() => new Telepush({ botToken: "token", chatId: "" }), TelepushConfigError);
 });
 
+test("constructor throws on invalid apiBaseUrl", async () => {
+  assert.throws(() => new Telepush({ botToken: "token", chatId: "123", apiBaseUrl: "not-a-url" }), TelepushConfigError);
+  assert.throws(() => new Telepush({ botToken: "token", chatId: "123", apiBaseUrl: "ftp://example.com" }), TelepushConfigError);
+});
+
 test("push works with object config", async () => {
   await withFetch(
     async (url, init) => {

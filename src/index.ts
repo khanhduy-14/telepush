@@ -298,8 +298,15 @@ export class Telepush {
       throw new TelepushConfigError("chatId is required", "MISSING_CHAT_ID");
     }
 
-    if (config?.apiBaseUrl !== undefined && (!config.apiBaseUrl.startsWith("http://") && !config.apiBaseUrl.startsWith("https://"))) {
-      throw new TelepushConfigError("apiBaseUrl must start with http:// or https://", "INVALID_API_BASE_URL");
+    if (config?.apiBaseUrl !== undefined) {
+      try {
+        const url = new URL(config.apiBaseUrl);
+        if (url.protocol !== "http:" && url.protocol !== "https:") {
+          throw new Error(); // caught below
+        }
+      } catch (err) {
+        throw new TelepushConfigError("apiBaseUrl must be a valid http or https URL", "INVALID_API_BASE_URL");
+      }
     }
 
     if (config?.defaultTimeoutMs !== undefined && (typeof config.defaultTimeoutMs !== 'number' || config.defaultTimeoutMs <= 0)) {
