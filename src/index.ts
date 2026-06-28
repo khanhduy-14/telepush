@@ -386,7 +386,7 @@ export class Telepush {
     if (pushOptions.messageThreadId !== undefined)
       payload.message_thread_id = pushOptions.messageThreadId;
     if (pushOptions.disableWebPagePreview !== undefined) {
-      payload.disable_web_page_preview = pushOptions.disableWebPagePreview;
+      payload.link_preview_options = { is_disabled: pushOptions.disableWebPagePreview };
     }
 
     const timeoutMs = pushOptions.timeoutMs ?? this.defaultTimeoutMs;
