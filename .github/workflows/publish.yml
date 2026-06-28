@@ -3,9 +3,19 @@ name: publish
 on:
   release:
     types: ["published"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g., major, minor, patch, or 1.2.3)'
+        required: false
+        type: string
+      branch:
+        description: 'Branch to checkout (leave empty to use the default branch selected in the UI)'
+        required: false
+        type: string
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
 
 jobs:
@@ -13,6 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -21,4 +33,12 @@ jobs:
       - run: npm install -g npm@11.5.1
       - run: npm ci
       - run: npm run build
+      - name: Bump version
+        if: ${{ github.event.inputs.version != '' }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          npm version ${{ github.event.inputs.version }} -m "chore: release %s"
       - run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
